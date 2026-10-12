@@ -14,105 +14,170 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;800&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
-<style>/* Soul Hunt site. Colours are the game's own (src/shared/Palette.luau): lacquer panels, bronze trim,
-   jade for ready, ward gold for rewards, Grade cyan/jade/amethyst/gold. Dark only, like the game. */
+<style>/* Soul Hunt site. Colours are the game's own (src/shared/Palette.luau). Dark only, like the game.
+   Built like a phone-brand product page (user 2026-10-12): one idea per screen, pinned media while
+   the text scrolls past, type that rises in as it enters, big numbers. Every motion is additive:
+   without JS or with reduced motion everything is simply visible. */
 :root {
-	--bg: #0b0e18;
+	--bg: #090b14;
+	--bg2: #0f1322;
 	--lacquer: #1b2238;
 	--outline: #10131c;
 	--bronze: #c08a3e;
 	--jade: #2ed3a6;
 	--ward: #ffd978;
 	--spark: #5fe6ff;
+	--moon: #9fe7ff;
 	--text: #eef3f8;
 	--muted: #9aa7b8;
-	--moon: #9fe7ff;
+	--ease: cubic-bezier(.2, .7, .2, 1);
 	color-scheme: dark;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-	margin: 0;
-	background: var(--bg);
-	color: var(--text);
-	font-family: Kanit, Nunito, system-ui, sans-serif;
-	line-height: 1.55;
-	-webkit-font-smoothing: antialiased;
+	margin: 0; background: var(--bg); color: var(--text);
+	font-family: Kanit, Nunito, system-ui, sans-serif; line-height: 1.5;
+	-webkit-font-smoothing: antialiased; overflow-x: clip;
 }
 img { max-width: 100%; height: auto; display: block; }
 a { color: var(--moon); }
-h1, h2, h3 { font-family: Nunito, Kanit, sans-serif; font-weight: 900; line-height: 1.15; text-wrap: balance; margin: 0 0 .5em; }
-h1 { font-size: clamp(2rem, 5vw, 3rem); }
-h2 { font-size: clamp(1.5rem, 3.5vw, 2.1rem); color: var(--ward); }
-h3 { font-size: 1.3rem; color: var(--moon); }
+h1, h2, h3 { font-family: Nunito, Kanit, sans-serif; font-weight: 900; line-height: 1.05; letter-spacing: -.01em; text-wrap: balance; margin: 0 0 .4em; }
+h1 { font-size: clamp(2.4rem, 7vw, 5rem); }
+h2 { font-size: clamp(2rem, 5.5vw, 4rem); }
+h3 { font-size: clamp(1.25rem, 2.4vw, 1.6rem); color: var(--moon); }
 p { margin: 0 0 .8em; }
 .muted { color: var(--muted); }
+.kicker { font-family: Nunito, sans-serif; font-weight: 900; font-size: .85rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ward); margin-bottom: 14px; }
+.lead { font-size: clamp(1.1rem, 2.2vw, 1.45rem); color: var(--muted); max-width: 34ch; }
 
-/* language: the page shows one <span lang>/<div lang> set at a time */
-/* (scoped under body: <html lang> itself must never match) */
+/* language: one <span lang>/<div lang> set shows at a time (scoped under body: <html lang> must never match) */
 body [lang="en"], body [lang="th"] { display: none; }
 html[data-lang="en"] body div[lang="en"], html[data-lang="th"] body div[lang="th"] { display: block; }
 html[data-lang="en"] body span[lang="en"], html[data-lang="th"] body span[lang="th"] { display: inline; }
 
-/* nav */
+/* nav: transparent over the hero, solid once scrolled */
 .nav {
-	position: sticky; top: 0; z-index: 10;
-	display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-	padding: 10px 16px; padding-top: calc(10px + env(safe-area-inset-top, 0px));
-	background: rgba(11, 14, 24, .86); backdrop-filter: blur(10px);
-	border-bottom: 1px solid rgba(192, 138, 62, .35);
+	position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+	display: flex; align-items: center; justify-content: space-between; gap: 12px;
+	padding: 12px 20px; padding-top: calc(12px + env(safe-area-inset-top, 0px));
+	background: transparent; transition: background .35s, backdrop-filter .35s, border-color .35s;
+	border-bottom: 1px solid transparent;
 }
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-family: Nunito, sans-serif; color: var(--text); text-decoration: none; font-size: 1.15rem; }
+.nav.solid { background: rgba(9, 11, 20, .78); backdrop-filter: blur(14px); border-color: rgba(192, 138, 62, .3); }
+.brand { display: flex; align-items: center; gap: 10px; white-space: nowrap; font-weight: 900; font-family: Nunito, sans-serif; color: var(--text); text-decoration: none; font-size: 1.1rem; }
 .brand img { border-radius: 8px; }
-.links { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; }
-.links a { color: var(--text); text-decoration: none; font-weight: 600; padding: 6px 2px; border-bottom: 2px solid transparent; }
-.links a.on { border-color: var(--ward); }
-.lang { background: var(--lacquer); color: var(--text); border: 1px solid var(--bronze); border-radius: 999px; padding: 6px 12px; font: inherit; font-weight: 700; cursor: pointer; }
+.links { display: flex; align-items: center; gap: 2px 16px; }
+.links a { color: var(--text); text-decoration: none; font-weight: 600; font-size: .95rem; opacity: .85; }
+.links a.on, .links a:hover { opacity: 1; }
+.lang { background: rgba(27, 34, 56, .7); color: var(--text); border: 1px solid var(--bronze); border-radius: 999px; padding: 6px 12px; font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
+@media (max-width: 560px) { .links a:not(.on):not([href^="http"]) { display: none; } .nav { padding-inline: 14px; gap: 8px; } .brand { font-size: 1rem; gap: 8px; } .links { gap: 2px 10px; } .links a { font-size: .9rem; } .lang { padding: 5px 10px; } }
 
-/* hero */
-.hero { position: relative; isolation: isolate; min-height: min(78vh, 720px); display: grid; place-items: center; overflow: hidden; }
-.hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(.55) saturate(1.1); }
-.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(11,14,24,.15) 0%, rgba(11,14,24,.55) 60%, var(--bg) 100%); }
-.hero-in { text-align: center; padding: 40px 16px 32px; max-width: 760px; }
-.logo { width: min(520px, 80vw); margin: 0 auto 12px; filter: drop-shadow(0 6px 24px rgba(0,0,0,.6)); }
-.tag { font-size: clamp(1.05rem, 2.4vw, 1.4rem); font-weight: 600; margin-bottom: 20px; text-shadow: 0 2px 10px #000; }
-.cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 14px; }
+/* reveal: rises in when it enters the viewport (site.js adds .in) */
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity .8s var(--ease), transform .9s var(--ease); transition-delay: var(--d, 0s); }
+.reveal.in { opacity: 1; transform: none; }
+.reveal.from-left { transform: translateX(-48px); }
+.reveal.from-right { transform: translateX(48px); }
+.reveal.scale { transform: scale(.92); }
+.reveal.in.from-left, .reveal.in.from-right, .reveal.in.scale { transform: none; }
+
+/* sections */
+.screen { min-height: 100svh; display: grid; align-content: center; padding: 96px 20px; position: relative; }
+.wrap { width: min(1120px, 100%); margin: 0 auto; }
 .btn {
-	display: inline-flex; align-items: center; gap: 8px;
-	padding: 14px 24px; border-radius: 14px; text-decoration: none; font-weight: 800; font-size: 1.05rem;
-	background: var(--lacquer); color: var(--text); border: 2px solid var(--bronze);
-	box-shadow: 0 4px 0 var(--outline), 0 10px 24px rgba(0,0,0,.45);
-	transition: transform .08s;
+	display: inline-flex; align-items: center; gap: 10px;
+	padding: 16px 28px; border-radius: 999px; text-decoration: none; font-weight: 800; font-size: 1.05rem;
+	background: rgba(27, 34, 56, .85); color: var(--text); border: 1px solid rgba(192, 138, 62, .7);
+	transition: transform .25s var(--ease), background .25s;
 }
-.btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--outline); }
-.btn.play { background: linear-gradient(180deg, #ffe39a, var(--ward)); color: var(--outline); border-color: #a86f23; }
-.code { font-size: 1.05rem; text-shadow: 0 2px 8px #000; }
-.code b { color: var(--ward); letter-spacing: .06em; }
-.age { font-size: .9rem; color: var(--muted); max-width: 560px; margin: 0 auto; text-shadow: 0 1px 6px #000; }
+.btn:hover { transform: translateY(-2px); background: var(--lacquer); }
+.btn.play { background: var(--ward); color: var(--outline); border-color: var(--ward); box-shadow: 0 10px 40px rgba(255, 217, 120, .25); }
+.btn.play:hover { background: #ffe7a6; }
 
-/* body sections */
-.wrap { width: min(1040px, 100%); margin: 0 auto; padding: 8px 16px 48px; }
-.wrap > section { padding: 28px 0; border-bottom: 1px solid rgba(154,167,184,.15); }
-.wrap > section:last-child { border-bottom: 0; }
-.pills { list-style: none; padding: 0; margin: 0 0 14px; display: flex; flex-wrap: wrap; gap: 8px; }
-.pills li { background: var(--lacquer); border: 1px solid rgba(192,138,62,.5); border-radius: 999px; padding: 8px 14px; font-weight: 600; }
-.more { font-weight: 700; }
-.video { position: relative; aspect-ratio: 16 / 9; max-width: 100%; background: #000; border-radius: 14px; overflow: hidden; border: 2px solid var(--bronze); }
+/* 1 · hero */
+.hero { min-height: 100svh; display: grid; align-items: end; position: relative; isolation: isolate; overflow: hidden; }
+.hero-bg { position: absolute; inset: -12% 0 0; width: 100%; height: 112%; object-fit: cover; object-position: 60% 40%; z-index: -2; }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(9,11,20,.1) 0%, rgba(9,11,20,.25) 45%, rgba(9,11,20,.92) 85%, var(--bg) 100%); }
+.hero-in { width: min(1120px, 100%); margin: 0 auto; padding: 0 20px 72px; }
+.hero .logo { width: min(460px, 70vw); margin: 0 0 18px; filter: drop-shadow(0 10px 30px rgba(0,0,0,.6)); }
+.hero .tag { font-size: clamp(1.15rem, 2.6vw, 1.7rem); font-weight: 600; max-width: 30ch; text-shadow: 0 2px 14px #000; margin-bottom: 22px; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.age { font-size: .88rem; color: var(--muted); max-width: 60ch; text-shadow: 0 1px 8px #000; }
+.cue { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); width: 22px; height: 36px; border: 2px solid rgba(238,243,248,.5); border-radius: 12px; }
+.cue::after { content: ""; position: absolute; left: 50%; top: 7px; width: 4px; height: 8px; margin-left: -2px; border-radius: 2px; background: var(--ward); animation: cue 1.6s infinite; }
+@keyframes cue { 0% { transform: translateY(0); opacity: 1 } 70% { transform: translateY(12px); opacity: 0 } 100% { opacity: 0 } }
+
+/* 2 · pinned story: the media stays while the steps scroll past */
+.story { display: grid; grid-template-columns: 1fr; gap: 0; width: min(1480px, 100%); margin: 0 auto; padding: 40px 20px; }
+.story-media { position: sticky; top: 0; height: 100svh; display: grid; place-items: center; z-index: 1; }
+.story-media .frame { position: relative; width: min(100%, 820px); aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(192,138,62,.35); }
+.story-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .7s var(--ease), transform 1.2s var(--ease); transform: scale(1.04); }
+.story-media img.on { opacity: 1; transform: none; }
+.story-steps { display: grid; }
+.step { min-height: 100svh; display: grid; align-content: center; padding: 20px 0; }
+.step .n { font-family: Nunito, sans-serif; font-weight: 900; font-size: clamp(3rem, 9vw, 6rem); color: var(--ward); line-height: 1; opacity: .9; }
+.step h2 { font-size: clamp(1.9rem, 4.5vw, 3rem); }
+.step p { font-size: clamp(1.05rem, 2vw, 1.3rem); color: var(--muted); max-width: 38ch; }
+@media (min-width: 900px) {
+	.story { grid-template-columns: 1fr 1.45fr; gap: 56px; padding-inline: 40px; }
+	.story-steps { grid-column: 1; grid-row: 1; }
+	.story-media { grid-column: 2; grid-row: 1; }
+}
+@media (max-width: 899px) {
+	.story-media { height: 52svh; top: 0; }
+	.story-media .frame { width: 100%; }
+	.step { min-height: 70svh; }
+}
+
+/* 3 · numbers */
+.stats { background: var(--bg2); }
+.stats .wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 28px 20px; text-align: center; }
+.stat b { display: block; font-family: Nunito, sans-serif; font-weight: 900; font-size: clamp(3.2rem, 9vw, 6.5rem); line-height: 1; color: var(--ward); font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-weight: 600; font-size: 1.05rem; }
+
+/* 4 · product reveal: the chakram phantom floats, the text comes in around it */
+.product { overflow: hidden; background: radial-gradient(ellipse at 50% 40%, rgba(95, 230, 255, .14), transparent 55%), var(--bg); text-align: center; }
+.product .phantom { width: min(360px, 60vw); margin: 0 auto 10px; filter: drop-shadow(0 0 40px rgba(159, 231, 255, .55)); animation: float 6s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0) rotate(-2deg) } 50% { transform: translateY(-18px) rotate(2deg) } }
+.product h2 { font-size: clamp(2.2rem, 6vw, 4.6rem); background: linear-gradient(180deg, #fff, var(--moon)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.skills { list-style: none; padding: 0; margin: 22px auto 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 26px; max-width: 760px; }
+.skills li { font-family: Nunito, sans-serif; font-weight: 800; font-size: clamp(1rem, 2vw, 1.3rem); }
+.skills li b { color: var(--ward); margin-right: 8px; }
+
+/* 5 · souls as alternating slides */
+.souls { overflow: hidden; }
+.souls .slide { display: grid; gap: 24px; align-items: center; padding: 48px 0; }
+.souls .slide img { border-radius: 22px; box-shadow: 0 24px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(192,138,62,.35); }
+.souls .slide h2 { font-size: clamp(1.9rem, 4.6vw, 3.4rem); }
+.souls .role { color: var(--moon); font-weight: 700; font-size: 1.05rem; margin-bottom: 8px; }
+.souls .new { display: inline-block; background: var(--ward); color: var(--outline); font-family: Nunito, sans-serif; font-weight: 900; font-size: .75rem; letter-spacing: .14em; padding: 4px 10px; border-radius: 999px; margin-left: 10px; vertical-align: middle; }
+@media (min-width: 820px) {
+	.souls .slide { grid-template-columns: 1.15fr 1fr; gap: 56px; }
+	.souls .slide:nth-child(even) .pic { order: 2; }
+}
+
+/* 6 · bosses */
+.bosses .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.bosses figure { margin: 0; border-radius: 20px; overflow: hidden; background: var(--lacquer); box-shadow: 0 0 0 1px rgba(192,138,62,.35); }
+.bosses figcaption { padding: 12px 16px 14px; display: grid; }
+.bosses figcaption b { font-size: 1.1rem; }
+.bosses figcaption span { color: var(--muted); font-size: .95rem; }
+
+/* 7 · clip */
+.video { position: relative; aspect-ratio: 16 / 9; width: min(900px, 100%); margin: 0 auto; background: #000; border-radius: 22px; overflow: hidden; box-shadow: 0 24px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(192,138,62,.35); }
 .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-.steps li { background: var(--lacquer); border-radius: 14px; padding: 16px 16px 16px 58px; position: relative; border: 1px solid rgba(154,167,184,.15); min-width: 0; }
-.steps b { position: absolute; left: 14px; top: 12px; width: 34px; height: 34px; border-radius: 50%; background: var(--ward); color: var(--outline); display: grid; place-items: center; font-family: Nunito, sans-serif; font-weight: 900; }
-.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-bottom: 12px; }
-.grid figure { margin: 0; background: var(--lacquer); border-radius: 14px; overflow: hidden; border: 1px solid rgba(192,138,62,.4); }
-.grid figcaption { padding: 10px 14px 12px; display: grid; }
-.grid figcaption span { color: var(--muted); font-size: .92rem; }
-.community { text-align: center; }
 
-/* guide */
+/* 8 · final call */
+.final { text-align: center; background: radial-gradient(ellipse at 50% 100%, rgba(255, 217, 120, .14), transparent 60%), var(--bg); }
+.final .code { font-size: 1.15rem; margin: 18px 0 8px; }
+.final .code b { color: var(--ward); letter-spacing: .08em; }
+
+/* guide / updates / privacy (simple pages) */
+.page { padding-top: calc(88px + env(safe-area-inset-top, 0px)); }
 .toc { list-style: none; padding: 0; margin: 0 0 24px; display: flex; flex-wrap: wrap; gap: 8px; }
 .toc a { display: inline-block; background: var(--lacquer); border: 1px solid rgba(154,167,184,.25); border-radius: 999px; padding: 6px 12px; text-decoration: none; color: var(--text); font-weight: 600; font-size: .95rem; }
-.topic { padding: 24px 0; border-top: 1px solid rgba(154,167,184,.15); scroll-margin-top: 72px; }
-.card { display: grid; gap: 10px; background: var(--lacquer); border-radius: 14px; overflow: hidden; margin-bottom: 14px; border: 1px solid rgba(154,167,184,.12); }
+.topic { padding: 24px 0; border-top: 1px solid rgba(154,167,184,.15); scroll-margin-top: 80px; }
+.card { display: grid; gap: 10px; background: var(--lacquer); border-radius: 16px; overflow: hidden; margin-bottom: 14px; border: 1px solid rgba(154,167,184,.12); }
 .card-text { padding: 4px 16px 12px; }
 .card-text p { margin: 0 0 .25em; }
 @media (min-width: 760px) {
@@ -120,22 +185,31 @@ html[data-lang="en"] body span[lang="en"], html[data-lang="th"] body span[lang="
 	.card img { height: 100%; object-fit: cover; }
 	.card-text { padding: 14px 18px; }
 }
-
-/* updates */
-.patch { background: var(--lacquer); border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; border: 1px solid rgba(192,138,62,.35); }
+.patch { background: var(--lacquer); border-radius: 16px; padding: 18px 20px; margin-bottom: 16px; border: 1px solid rgba(192,138,62,.35); }
 .patch h3 { color: var(--ward); font-size: 1.35rem; }
 .patch p { margin: 0 0 .3em; }
-
-/* prose */
 .prose h2 { font-size: 1.35rem; color: var(--moon); margin-top: 1.4em; }
 .prose p { max-width: 68ch; }
+.foot { text-align: center; color: var(--muted); font-size: .9rem; padding: 28px 16px calc(28px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid rgba(154,167,184,.15); }
 
-.foot { text-align: center; color: var(--muted); font-size: .9rem; padding: 24px 16px calc(24px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid rgba(154,167,184,.15); }
+/* scroll-linked parallax where the browser has it; nothing changes where it does not */
+@supports (animation-timeline: scroll()) {
+	.hero-bg { animation: heroDrift linear both; animation-timeline: scroll(root); animation-range: 0 100svh; }
+	@keyframes heroDrift { to { transform: translateY(14%) scale(1.06); } }
+	.product .phantom { animation: float 6s ease-in-out infinite, phantomSpin linear both; animation-timeline: auto, view(); animation-range: normal, entry 0% cover 60%; }
+	@keyframes phantomSpin { from { rotate: -28deg; scale: .7; opacity: 0 } to { rotate: 0deg; scale: 1; opacity: 1 } }
+}
+@media (prefers-reduced-motion: reduce) {
+	.reveal { opacity: 1; transform: none; transition: none; }
+	.hero-bg, .product .phantom, .cue::after { animation: none; }
+	.story-media img { transition: none; }
+	html { scroll-behavior: auto; }
+}
 </style>
 </head>
 <body>
 <nav class="nav"><a class="brand" href="index.html"><img src="img/favicon.png" alt="" width="36" height="36">Soul Hunt</a><div class="links"><a href="index.html"><span lang="en">Home</span><span lang="th">หน้าแรก</span></a><a href="guide.html" class="on"><span lang="en">Guide</span><span lang="th">คู่มือ</span></a><a href="updates.html"><span lang="en">Updates</span><span lang="th">อัปเดต</span></a><a href="https://discord.gg/xx6YXn2udq" rel="noopener">Discord</a><button class="lang" type="button" aria-label="Switch language">TH / EN</button></div></nav>
-<main class="wrap guide">
+<main class="wrap guide page">
 	<h1><span lang="en">Guide</span><span lang="th">คู่มือ</span></h1>
 	<p class="muted"><span lang="en">Pictures from the game, numbers from the game's own config. Updated with every patch.</span><span lang="th">ภาพจากในเกม ตัวเลขจากค่าในเกมจริง อัปเดตทุกแพตช์</span></p>
 	<div lang="en"><ul class="toc"><li><a href="#getting_started">🌱 Start Here</a></li><li><a href="#controls">🎮 Controls</a></li><li><a href="#stats">📊 Stats</a></li><li><a href="#rings_how">💍 How Rings Work</a></li><li><a href="#ring_list">📜 Every Ring</a></li><li><a href="#souls">⚔️ Souls &amp; Skills</a></li><li><a href="#monsters">🐗 Every Monster</a></li><li><a href="#bosses">👑 Every Boss</a></li><li><a href="#drops">💰 Drops &amp; Relics</a></li><li><a href="#builds">🛠️ Builds</a></li></ul><section id="getting_started" class="topic"><h3>🌱 Start Here</h3><div class="card"><img src="img/cards/display_rings.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p>Hunt glowing <strong>Resonant</strong> beasts ◆ and absorb their power as <strong>Rings</strong> 💍</p><p>1️⃣ Pick a side → awaken your <strong>Soul</strong> (your weapon)</p><p>2️⃣ Follow the <strong>Headmaster</strong> ❓ → training glade</p><p>3️⃣ Absorb your first Ring 💍 → head out to the <strong>Outskirts</strong></p><p>🗺️ Touch every <strong>Waygate</strong> — warp between them for free</p><p>🔓 Rings unlock levels: 0 → Lv10 · 1 → Lv20 · 2 → Lv30 · 3 → Lv40 · 4 → Lv50</p><p>🌿 Stuck at Lv49? Eat an <strong>Immortal Herb</strong> → <strong>Breakthrough</strong> (Heart Cavern, behind the falls)</p><p>⚔️ <strong>Proving Grounds</strong> in the Outskirts: the place to duel</p><p>🛡️ No PvP until Lv15 + your first Ring</p><p>⚔️ absorbing always turns PvP on</p><p>📅 Log in each day → Lumen 🪙 or Echo 💎</p><p>Day 7 → free <strong>Resonance Ward</strong></p></div></div></section><section id="controls" class="topic"><h3>🎮 Controls</h3><div class="card"><img src="img/cards/ui_stats.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p>🖱️ <strong>M1</strong> attack</p><p><strong>Z X C V</strong> skills (V = ultimate, 4th Ring)</p><p><strong>Q</strong> dash 💨 (out of red warnings)</p><p><strong>Space ×2</strong> double jump</p><p><strong>1 2 3</strong> fists / Soul / hidden weapon</p><p><strong>G</strong> Surge 🔥 (in a fight)</p><p><strong>H</strong> Display 💍 (show your Rings)</p><p>📱 Phone: every action has a button</p><p>🎮 Console: R2 attack, B dash, L1 Surge</p></div></div></section><section id="stats" class="topic"><h3>📊 Stats</h3><div class="card"><img src="img/cards/ui_stats.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p>⚔️ <strong>Martial</strong> fists</p><p>❤️ <strong>Vitality</strong> max HP</p><p>✨ <strong>Soul</strong> Soul skills</p><p>🔋 <strong>Spirit</strong> Energy, regen, heals</p><p>🗡️ <strong>Artifice</strong> hidden weapons</p><p>Max <strong>50</strong> a stat → you can max <strong>3</strong></p><p>Rings 💍 and Relics add more on top</p><p>🔄 Reset: first time free</p></div></div></section><section id="rings_how" class="topic"><h3>💍 How Rings Work</h3><div class="card"><img src="img/cards/ui_rings.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p>◆ <strong>Resonant</strong> beasts (8%) and every <strong>boss</strong> drop a <strong>Remnant</strong> — absorb it ⏳ I 15s · II 30s · III 45s · IV 60s</p><p>Each Ring = <strong>stat points</strong> + a <strong>perk</strong> + a <strong>trait</strong> + a skill (Z → X → C → V)</p><p>🎯 Match your Soul:</p><p><strong>perfect</strong> = full</p><p><strong>neutral</strong> = half trait</p><p><strong>clash</strong> = no trait ✖</p><p><strong>Obelisk Maul</strong> 🪨💎</p><p><strong>Twilight Thorn Lotus</strong> 🌿🌙</p><p><strong>Thunderfang Kirin</strong> ⚡🌪️</p><p><strong>Crescent Moon Chakram</strong> 🌙💎</p><p>✨ <strong>Polish</strong> (Librarian) rerolls Quality 0.90–1.10</p><p>💥 <strong>Break Rings</strong> 1,000 Lumen each → collect a new set</p></div></div></section><section id="ring_list" class="topic"><h3>📜 Every Ring</h3><div class="card"><img src="img/cards/ring_glowcap_sprite.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p>Traits work in full on a perfect Soul</p><p>✖ on clash</p><p><strong>Glowcap Sprite</strong> · Grade I · 🌿 Verdant</p><p>✨ Trait: Healing received +4%</p><p>➕ Perk: Skill cooldown −1.6%</p><p>💪 Spirit</p><p>✅ Twilight Thorn Lotus</p><p>📍 Academy glade Lv5–7 · Outskirts Lv11–15</p></div></div><div class="card"><img src="img/cards/ring_shardback_tortoise.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Shardback Tortoise</strong> · Grade I · 💎 Crystal</p><p>✨ Trait: Max Health +3%</p><p>➕ Perk: Damage taken −2%</p><p>💪 Vitality</p><p>✅ Obelisk Maul</p><p>Crescent Moon Chakram</p><p>📍 Academy glade Lv5–7 · Outskirts Lv10–14</p></div></div><div class="card"><img src="img/cards/ring_sparkmoth.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Sparkmoth</strong> · Grade I · ⚡ Storm</p><p>✨ Trait: M1 damage +3%</p><p>➕ Perk: Critical chance +2.4%</p><p>💪 Martial</p><p>✅ Thunderfang Kirin</p><p>📍 Academy glade Lv5–7 · Outskirts Lv14–18</p></div></div><div class="card"><img src="img/cards/ring_mossback_boar.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Mossback Boar</strong> · Grade I · 🪨 Earth</p><p>✨ Trait: Damage taken while using a skill -3%</p><p>➕ Perk: Damage taken −2%</p><p>💪 Vitality</p><p>✅ Obelisk Maul</p><p>📍 Outskirts · Lv10–14</p></div></div><div class="card"><img src="img/cards/ring_gale_sparrowhawk.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Gale Sparrowhawk</strong> · Grade I · 🌪️ Wind</p><p>✨ Trait: Dash cooldown -10%</p><p>➕ Perk: Move speed +2%</p><p>💪 Artifice</p><p>✅ Thunderfang Kirin</p><p>📍 Outskirts · Lv16–22</p></div></div><div class="card"><img src="img/cards/ring_moonshade_lynx.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Moonshade Lynx</strong> · Grade II · 🌙 Moon</p><p>✨ Trait: Pounce: the first hit within 1s of a dash gets +10% crit chance</p><p>➕ Perk: Critical chance +4.8%</p><p>💪 Martial</p><p>✅ Twilight Thorn Lotus</p><p>Crescent Moon Chakram</p><p>📍 Deepwood · Lv22–27</p></div></div><div class="card"><img src="img/cards/ring_thornling.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Thornling</strong> · Grade II · 🌿 Verdant</p><p>✨ Trait: Thorn Lash roots +0.2s longer</p><p>➕ Perk: Skill cooldown −3.2%</p><p>💪 Soul</p><p>✅ Twilight Thorn Lotus</p><p>📍 Deepwood · Lv24–29</p></div></div><div class="card"><img src="img/cards/ring_maz_bird.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Maz Bird</strong> · Grade I–III · 🌙 Moon · 👑</p><p>✨ Trait: Energy regeneration +10%</p><p>➕ Perk: Skill cooldown −4.8%</p><p>💪 Soul</p><p>✅ Twilight Thorn Lotus</p><p>Crescent Moon Chakram</p><p>📍 Lotus pond, Outskirts</p></div></div><div class="card"><img src="img/cards/ring_gale_peacock.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Gale Peacock</strong> · Grade I–III · 🌪️ Wind · 👑</p><p>✨ Trait: Surge lasts +1s</p><p>➕ Perk: Move speed +6%</p><p>💪 Soul</p><p>✅ Thunderfang Kirin</p><p>📍 Outskirts, edge of Deepwood</p></div></div><div class="card"><img src="img/cards/ring_crystal_golem.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Crystal Golem</strong> · Grade III · 💎 Crystal</p><p>✨ Trait: Damage taken from knockback -20%</p><p>➕ Perk: Damage taken −6%</p><p>💪 Vitality</p><p>✅ Obelisk Maul</p><p>Crescent Moon Chakram</p><p>📍 Deepwood Hollow · Lv30–35</p></div></div><div class="card"><img src="img/cards/ring_voltbat.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Voltbat</strong> · Grade III · ⚡ Storm</p><p>✨ Trait: Chain Lightning bounces once more</p><p>➕ Perk: Move speed +6%</p><p>💪 Artifice</p><p>✅ Thunderfang Kirin</p><p>📍 Deepwood Hollow · Lv34–40</p></div></div><div class="card"><img src="img/cards/ring_panther_queen.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Moonshade Panther Queen</strong> · Grade I–III · 🌙 Moon · 👑</p><p>✨ Trait: Move speed +8% for 3s after a kill</p><p>➕ Perk: Move speed +6%</p><p>💪 Martial</p><p>✅ Twilight Thorn Lotus</p><p>Crescent Moon Chakram</p><p>📍 Deepwood Hollow</p></div></div><div class="card"><img src="img/cards/ring_prismback_behemoth.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Prismback Behemoth</strong> · Grade IV · 💎 Crystal</p><p>✨ Trait: Max Health +6%</p><p>➕ Perk: Damage taken −9%</p><p>💪 Vitality</p><p>✅ Obelisk Maul</p><p>Crescent Moon Chakram</p><p>📍 Heart Cavern · Lv40–45</p></div></div><div class="card"><img src="img/cards/ring_gloomveil_moth.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Gloomveil Moth</strong> · Grade IV · 🌙 Moon</p><p>✨ Trait: Energy regeneration +12%</p><p>➕ Perk: Skill cooldown −7.2%</p><p>💪 Soul</p><p>✅ Twilight Thorn Lotus</p><p>Crescent Moon Chakram</p><p>📍 Heart Cavern · Lv43–48</p></div></div><div class="card"><img src="img/cards/ring_stormglass_viper.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Stormglass Viper</strong> · Grade IV · ⚡ Storm</p><p>✨ Trait: Dash cooldown -15%</p><p>➕ Perk: Move speed +9%</p><p>💪 Artifice</p><p>✅ Thunderfang Kirin</p><p>📍 Heart Cavern · Lv46–50</p></div></div></section><section id="souls" class="topic"><h3>⚔️ Souls &amp; Skills</h3><div class="card"><img src="img/cards/soul_obelisk_maul.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p>Rolled when you awaken</p><p>Change it at <strong>Attuner Shen</strong> for 300 Spirit Essence 🔮 (always a different one)</p><p><strong>Obelisk Maul</strong> · Defense / Power</p><p><strong>Z</strong> Quake Slam</p><p><strong>X</strong> Chain Hook</p><p><strong>C</strong> Monolith Wall</p><p><strong>V</strong> Starfall Obelisk</p><p><strong>Surge</strong> 🛡️ −20% damage + lava trail</p></div></div><div class="card"><img src="img/cards/soul_thorn_lotus.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Twilight Thorn Lotus</strong> · Control / Support</p><p><strong>Z</strong> Thorn Lash</p><p><strong>X</strong> Bloom Field</p><p><strong>C</strong> Lotus Engulf</p><p><strong>V</strong> Twilight Garden</p><p><strong>Surge</strong> 🩸 heal 8% of damage dealt</p></div></div><div class="card"><img src="img/cards/soul_thunderfang_kirin.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Thunderfang Kirin</strong> · Agility</p><p><strong>Z</strong> Bolt Dash</p><p><strong>X</strong> Chain Lightning</p><p><strong>C</strong> Thunder Hoof</p><p><strong>V</strong> Storm Stampede</p><p><strong>Surge</strong> ⚡ ×1.4 speed</p></div></div><div class="card"><img src="img/cards/soul_crescent_chakram.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Crescent Moon Chakram</strong> · Agility / Power</p><p><strong>Z</strong> Crescent Ricochet</p><p><strong>X</strong> Lunar Orbit</p><p><strong>C</strong> Moonstep</p><p><strong>V</strong> Moonfall</p><p><strong>Surge</strong> 🌙 M1 throws fly ×1.75 as far</p></div></div><div class="card"><div class="card-text"><p>🥋 <strong>Academy Fist</strong> (slot 1), skills open with Mastery:</p><p><strong>Z</strong> Rising Palm (1)</p><p><strong>X</strong> Spirit Jab (25)</p><p><strong>C</strong> Shock Palm (50)</p><p>🗡️ Hidden weapons (slot 3) at Artificer Bo:</p><p><strong>Frostpine Needles</strong> 2,000 Lumen</p><p><strong>Thunderseed Bomb</strong> 4,500 Lumen</p><p><strong>Mirror Blossom Fan</strong> 5,000 Lumen</p><p><strong>Nightfall Sword</strong> Gamepass</p></div></div></section><section id="monsters" class="topic"><h3>🐗 Every Monster</h3><div class="card"><img src="img/cards/zone_academy_training_glade.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p>Every move shows a red warning → <strong>Q dash</strong> out 💨</p><p>◆ = Resonant (leaves a Remnant)</p><p>Its Grade is under its name, in the Ring's colour</p><p>👴 <strong>◆ Elder</strong> = a rare old one of any beast, Grade II–III</p><p>2.4% of spawns</p><p>Far higher level</p><p>🎯 25 kills in one zone without a ◆ → the next one born near you is ◆</p><p>🌱 <strong>Academy training glade</strong></p><p>No PvP</p><p>One beast a camp</p></div></div><div class="card"><img src="img/cards/zone_outskirts.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p>🌾 <strong>Outskirts</strong> · Grade I</p><p>Maz Bird 👑 at the lotus pond</p><p>Gale Peacock 👑</p></div></div><div class="card"><img src="img/cards/zone_deepwood.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p>🌲 <strong>Deepwood</strong> · Grade II</p><p>Both attack on sight</p></div></div><div class="card"><img src="img/cards/zone_deepwood_hollow.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p>💎 <strong>Deepwood Hollow</strong> · Grade III</p><p>Panther Queen 👑</p></div></div><div class="card"><img src="img/cards/zone_heart_cavern.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p>🌌 <strong>Heart Cavern</strong> · Grade IV</p><p>🌿 Immortal Herb behind the falls, an Elder Stormglass Viper Lv60 guards it</p></div></div></section><section id="bosses" class="topic"><h3>👑 Every Boss</h3><div class="card"><img src="img/cards/boss_maz_bird.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p>Top damage + their party get the full reward</p><p>Helpers get a share</p><p>⚠️ Every boss:</p><p><strong>Spirit Pulse</strong> hits the whole arena for 8% HP (no dodging it)</p><p><strong>Spirit Lance</strong> spears anyone who keeps away 8s, 12% HP (a wall stops it)</p><p>Heals count half</p><p><strong>Maz Bird</strong> · Wing Slap · Peck Flurry · Go To Sleep · Coo Gust · Call the Flock · Pigeon Drop · Crumb Rain</p><p>🎁 15–22 Echo 💎 · 10–15 Essence 🔮 · Remnant Grade I–III 💍 · Circlet of the Gale 4%</p></div></div><div class="card"><img src="img/cards/boss_gale_peacock.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Gale Peacock</strong> · Peacock Beam · Tail Gust · Cyclone Field · Sky Dive · Feather Rain</p><p>🎁 20–30 Echo 💎 · 20–30 Essence 🔮 · Remnant Grade I–III 💍 · Circlet of the Gale 10%</p></div></div><div class="card"><img src="img/cards/boss_panther_queen.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Moonshade Panther Queen</strong> · Shadow Tail Sweep · Moonclaw Combo · Shadow Pounce · Crescent Wave · Afterimage · Moon Crown Spikes</p><p>🎁 35–45 Echo 💎 · 30–40 Essence 🔮 · Remnant Grade I–III 💍 · Mirror Jade 12%</p></div></div></section><section id="drops" class="topic"><h3>💰 Drops &amp; Relics</h3><div class="card"><img src="img/cards/ui_relics.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p>• <strong>Circlet of the Gale</strong> — Gale Peacock 10% · Maz Bird 4%</p><p>• <strong>Mirror Jade</strong> — Crystal Golem 3% · Moonshade Panther Queen 12%</p><p>• <strong>Warden's Cloak</strong> — graduating</p><p>🪙 <strong>Lumen</strong> everything</p><p>💎 <strong>Echo</strong> Resonant + bosses → Polish</p><p>🔮 <strong>Essence</strong> bosses only → Soul Reroll</p></div></div></section><section id="builds" class="topic"><h3>🛠️ Builds</h3><div class="card"><img src="img/cards/soul_obelisk_maul.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p>Your Soul tells you which elements to hunt → fill 4 slots with perfect Rings</p><p><strong>Obelisk Maul</strong> — 🛡️ Tank: Vitality + Soul</p><p>Perks Damage taken −</p><p>✅ Shardback Tortoise I · Mossback Boar I · Crystal Golem III · Prismback Behemoth IV</p></div></div><div class="card"><img src="img/cards/soul_thorn_lotus.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Twilight Thorn Lotus</strong> — 🌸 Control: Soul + Spirit</p><p>Thornling for Thorn Lash</p><p>✅ Glowcap Sprite I · Moonshade Lynx II · Thornling II · Maz Bird I–III · Panther Queen I–III · Gloomveil Moth IV</p></div></div><div class="card"><img src="img/cards/soul_thunderfang_kirin.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Thunderfang Kirin</strong> — ⚡ Speed: Soul + Martial</p><p>Voltbat for Chain Lightning</p><p>✅ Sparkmoth I · Gale Sparrowhawk I · Gale Peacock I–III · Voltbat III · Stormglass Viper IV</p></div></div><div class="card"><img src="img/cards/soul_crescent_chakram.webp" alt="" loading="lazy" width="1000" height="475"><div class="card-text"><p><strong>Crescent Moon Chakram</strong> — 🌙 Mid-range: Soul + Spirit</p><p>Moonshade Lynx for crits on every quick hit</p><p>✅ Shardback Tortoise I · Moonshade Lynx II · Maz Bird I–III · Crystal Golem III · Panther Queen I–III · Prismback Behemoth IV · Gloomveil Moth IV</p></div></div></section></div>
@@ -144,8 +218,8 @@ html[data-lang="en"] body span[lang="en"], html[data-lang="th"] body span[lang="
 <footer class="foot"><p><span lang="en">Soul Hunt is a free game on Roblox by GGSK. Not affiliated with Roblox Corporation.</span><span lang="th">Soul Hunt เป็นเกมฟรีบน Roblox โดย GGSK ไม่เกี่ยวข้องกับ Roblox Corporation</span></p><p><a href="https://www.youtube.com/@hddGGSK" rel="noopener">YouTube</a> · <a href="https://www.facebook.com/hddGGSK" rel="noopener">Facebook</a> · <a href="https://discord.gg/xx6YXn2udq" rel="noopener">Discord</a> · <a href="privacy.html"><span lang="en">Privacy & contact</span><span lang="th">ความเป็นส่วนตัวและติดต่อ</span></a></p></footer>
 <script>(function () {
 	var root = document.documentElement;
-	var key = "soulhunt-lang";
-	var saved = null;
+	// language: remembered per browser, else from the browser's own language
+	var key = "soulhunt-lang", saved = null;
 	try { saved = localStorage.getItem(key); } catch (e) {}
 	var browser = (navigator.language || "").toLowerCase().indexOf("th") === 0 ? "th" : "en";
 	root.setAttribute("data-lang", saved === "th" || saved === "en" ? saved : browser);
@@ -156,6 +230,60 @@ html[data-lang="en"] body span[lang="en"], html[data-lang="th"] body span[lang="
 			try { localStorage.setItem(key, next); } catch (e) {}
 		});
 	});
+
+	// nav turns solid once the hero is scrolled past its top
+	var nav = document.querySelector(".nav");
+	function onScroll() { if (nav) nav.classList.toggle("solid", window.scrollY > 40); }
+	onScroll();
+	window.addEventListener("scroll", onScroll, { passive: true });
+
+	var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	if (!("IntersectionObserver" in window) || reduce) {
+		document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
+		document.querySelectorAll(".story-media img").forEach(function (img, i) { if (i === 0) img.classList.add("on"); });
+		return;
+	}
+
+	// reveal on entry, once
+	var io = new IntersectionObserver(function (entries) {
+		entries.forEach(function (e) {
+			if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+		});
+	}, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
+	document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+
+	// pinned story: the step nearest the middle of the screen picks the picture
+	var steps = document.querySelectorAll(".step");
+	var pics = document.querySelectorAll(".story-media img");
+	if (steps.length && pics.length) {
+		var show = function (i) { pics.forEach(function (p, j) { p.classList.toggle("on", j === i); }); };
+		show(0);
+		var so = new IntersectionObserver(function (entries) {
+			entries.forEach(function (e) {
+				if (e.isIntersecting) show(Number(e.target.getAttribute("data-step")) || 0);
+			});
+		}, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
+		steps.forEach(function (s) { so.observe(s); });
+	}
+
+	// numbers count up when they appear
+	var co = new IntersectionObserver(function (entries) {
+		entries.forEach(function (e) {
+			if (!e.isIntersecting) return;
+			co.unobserve(e.target);
+			var el = e.target, target = el.getAttribute("data-count"), suffix = el.getAttribute("data-suffix") || "";
+			var n = parseFloat(target); if (isNaN(n)) return;
+			var t0 = null, dur = 1100;
+			function tick(t) {
+				if (t0 === null) t0 = t;
+				var p = Math.min(1, (t - t0) / dur), ease = 1 - Math.pow(1 - p, 3);
+				el.textContent = Math.round(n * ease) + suffix;
+				if (p < 1) requestAnimationFrame(tick);
+			}
+			requestAnimationFrame(tick);
+		});
+	}, { threshold: 0.6 });
+	document.querySelectorAll("[data-count]").forEach(function (el) { co.observe(el); });
 })();
 </script>
 </body>
