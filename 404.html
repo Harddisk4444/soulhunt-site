@@ -18,9 +18,10 @@
 	var lang = saved === "th" || saved === "en" ? saved : ((navigator.language || "").toLowerCase().indexOf("th") === 0 ? "th" : "en");
 	root.setAttribute("data-lang", lang);
 	root.setAttribute("lang", lang);
-	// the hero text and buttons: swapping these late re-wraps the buttons (CLS 0.198 without the 800s)
-	var fonts = ["kanit-600-latin", "kanit-800-latin"];
-	if (lang === "th") fonts.push("kanit-600-thai", "kanit-800-thai");
+	// body text (400), hero line (600) and buttons (800): swapping any of them late re-wraps text and moves
+	// what is below it (Lighthouse 2026-10-12: CLS 0.198 without the 800s, 0.10 on privacy without the 400)
+	var fonts = ["kanit-400-latin", "kanit-600-latin", "kanit-800-latin"];
+	if (lang === "th") fonts.push("kanit-400-thai", "kanit-600-thai", "kanit-800-thai");
 	fonts.forEach(function (f) {
 		var l = document.createElement("link");
 		l.rel = "preload"; l.as = "font"; l.type = "font/woff2"; l.crossOrigin = "anonymous"; l.href = "fonts/" + f + ".woff2";
