@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="th" data-lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Soul Hunt — Privacy &amp; contact</title>
+<meta name="description" content="What this site and the game collect, and how to reach the developer.">
+<link rel="icon" href="img/favicon.png">
+<link rel="canonical" href="https://soulhunt.ggsk.dev/privacy.html">
+<meta property="og:title" content="Soul Hunt — Privacy &amp; contact">
+<meta property="og:description" content="What this site and the game collect, and how to reach the developer.">
+<meta property="og:image" content="https://soulhunt.ggsk.dev/img/og.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;800&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>/* Soul Hunt site. Colours are the game's own (src/shared/Palette.luau): lacquer panels, bronze trim,
+   jade for ready, ward gold for rewards, Grade cyan/jade/amethyst/gold. Dark only, like the game. */
+:root {
+	--bg: #0b0e18;
+	--lacquer: #1b2238;
+	--outline: #10131c;
+	--bronze: #c08a3e;
+	--jade: #2ed3a6;
+	--ward: #ffd978;
+	--spark: #5fe6ff;
+	--text: #eef3f8;
+	--muted: #9aa7b8;
+	--moon: #9fe7ff;
+	color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-family: Kanit, Nunito, system-ui, sans-serif;
+	line-height: 1.55;
+	-webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--moon); }
+h1, h2, h3 { font-family: Nunito, Kanit, sans-serif; font-weight: 900; line-height: 1.15; text-wrap: balance; margin: 0 0 .5em; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); }
+h2 { font-size: clamp(1.5rem, 3.5vw, 2.1rem); color: var(--ward); }
+h3 { font-size: 1.3rem; color: var(--moon); }
+p { margin: 0 0 .8em; }
+.muted { color: var(--muted); }
+
+/* language: the page shows one <span lang>/<div lang> set at a time */
+/* (scoped under body: <html lang> itself must never match) */
+body [lang="en"], body [lang="th"] { display: none; }
+html[data-lang="en"] body div[lang="en"], html[data-lang="th"] body div[lang="th"] { display: block; }
+html[data-lang="en"] body span[lang="en"], html[data-lang="th"] body span[lang="th"] { display: inline; }
+
+/* nav */
+.nav {
+	position: sticky; top: 0; z-index: 10;
+	display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+	padding: 10px 16px; padding-top: calc(10px + env(safe-area-inset-top, 0px));
+	background: rgba(11, 14, 24, .86); backdrop-filter: blur(10px);
+	border-bottom: 1px solid rgba(192, 138, 62, .35);
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-family: Nunito, sans-serif; color: var(--text); text-decoration: none; font-size: 1.15rem; }
+.brand img { border-radius: 8px; }
+.links { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; }
+.links a { color: var(--text); text-decoration: none; font-weight: 600; padding: 6px 2px; border-bottom: 2px solid transparent; }
+.links a.on { border-color: var(--ward); }
+.lang { background: var(--lacquer); color: var(--text); border: 1px solid var(--bronze); border-radius: 999px; padding: 6px 12px; font: inherit; font-weight: 700; cursor: pointer; }
+
+/* hero */
+.hero { position: relative; isolation: isolate; min-height: min(78vh, 720px); display: grid; place-items: center; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(.55) saturate(1.1); }
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(11,14,24,.15) 0%, rgba(11,14,24,.55) 60%, var(--bg) 100%); }
+.hero-in { text-align: center; padding: 40px 16px 32px; max-width: 760px; }
+.logo { width: min(520px, 80vw); margin: 0 auto 12px; filter: drop-shadow(0 6px 24px rgba(0,0,0,.6)); }
+.tag { font-size: clamp(1.05rem, 2.4vw, 1.4rem); font-weight: 600; margin-bottom: 20px; text-shadow: 0 2px 10px #000; }
+.cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 14px; }
+.btn {
+	display: inline-flex; align-items: center; gap: 8px;
+	padding: 14px 24px; border-radius: 14px; text-decoration: none; font-weight: 800; font-size: 1.05rem;
+	background: var(--lacquer); color: var(--text); border: 2px solid var(--bronze);
+	box-shadow: 0 4px 0 var(--outline), 0 10px 24px rgba(0,0,0,.45);
+	transition: transform .08s;
+}
+.btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--outline); }
+.btn.play { background: linear-gradient(180deg, #ffe39a, var(--ward)); color: var(--outline); border-color: #a86f23; }
+.code { font-size: 1.05rem; text-shadow: 0 2px 8px #000; }
+.code b { color: var(--ward); letter-spacing: .06em; }
+.age { font-size: .9rem; color: var(--muted); max-width: 560px; margin: 0 auto; text-shadow: 0 1px 6px #000; }
+
+/* body sections */
+.wrap { width: min(1040px, 100%); margin: 0 auto; padding: 8px 16px 48px; }
+.wrap > section { padding: 28px 0; border-bottom: 1px solid rgba(154,167,184,.15); }
+.wrap > section:last-child { border-bottom: 0; }
+.pills { list-style: none; padding: 0; margin: 0 0 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+.pills li { background: var(--lacquer); border: 1px solid rgba(192,138,62,.5); border-radius: 999px; padding: 8px 14px; font-weight: 600; }
+.more { font-weight: 700; }
+.video { position: relative; aspect-ratio: 16 / 9; max-width: 100%; background: #000; border-radius: 14px; overflow: hidden; border: 2px solid var(--bronze); }
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.steps li { background: var(--lacquer); border-radius: 14px; padding: 16px 16px 16px 58px; position: relative; border: 1px solid rgba(154,167,184,.15); min-width: 0; }
+.steps b { position: absolute; left: 14px; top: 12px; width: 34px; height: 34px; border-radius: 50%; background: var(--ward); color: var(--outline); display: grid; place-items: center; font-family: Nunito, sans-serif; font-weight: 900; }
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-bottom: 12px; }
+.grid figure { margin: 0; background: var(--lacquer); border-radius: 14px; overflow: hidden; border: 1px solid rgba(192,138,62,.4); }
+.grid figcaption { padding: 10px 14px 12px; display: grid; }
+.grid figcaption span { color: var(--muted); font-size: .92rem; }
+.community { text-align: center; }
+
+/* guide */
+.toc { list-style: none; padding: 0; margin: 0 0 24px; display: flex; flex-wrap: wrap; gap: 8px; }
+.toc a { display: inline-block; background: var(--lacquer); border: 1px solid rgba(154,167,184,.25); border-radius: 999px; padding: 6px 12px; text-decoration: none; color: var(--text); font-weight: 600; font-size: .95rem; }
+.topic { padding: 24px 0; border-top: 1px solid rgba(154,167,184,.15); scroll-margin-top: 72px; }
+.card { display: grid; gap: 10px; background: var(--lacquer); border-radius: 14px; overflow: hidden; margin-bottom: 14px; border: 1px solid rgba(154,167,184,.12); }
+.card-text { padding: 4px 16px 12px; }
+.card-text p { margin: 0 0 .25em; }
+@media (min-width: 760px) {
+	.card { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: center; }
+	.card img { height: 100%; object-fit: cover; }
+	.card-text { padding: 14px 18px; }
+}
+
+/* updates */
+.patch { background: var(--lacquer); border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; border: 1px solid rgba(192,138,62,.35); }
+.patch h3 { color: var(--ward); font-size: 1.35rem; }
+.patch p { margin: 0 0 .3em; }
+
+/* prose */
+.prose h2 { font-size: 1.35rem; color: var(--moon); margin-top: 1.4em; }
+.prose p { max-width: 68ch; }
+
+.foot { text-align: center; color: var(--muted); font-size: .9rem; padding: 24px 16px calc(24px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid rgba(154,167,184,.15); }
+</style>
+</head>
+<body>
+<nav class="nav"><a class="brand" href="index.html"><img src="img/favicon.png" alt="" width="36" height="36">Soul Hunt</a><div class="links"><a href="index.html"><span lang="en">Home</span><span lang="th">หน้าแรก</span></a><a href="guide.html"><span lang="en">Guide</span><span lang="th">คู่มือ</span></a><a href="updates.html"><span lang="en">Updates</span><span lang="th">อัปเดต</span></a><a href="https://discord.gg/xx6YXn2udq" rel="noopener">Discord</a><button class="lang" type="button" aria-label="Switch language">TH / EN</button></div></nav>
+<main class="wrap prose">
+	<h1><span lang="en">Privacy & contact</span><span lang="th">ความเป็นส่วนตัวและติดต่อ</span></h1>
+	<div lang="en">
+		<h2>This website</h2>
+		<p>This site is static pages hosted on GitHub Pages. It sets no cookies of its own and runs no analytics. The embedded video is served by YouTube in privacy-enhanced mode (youtube-nocookie.com); YouTube's own policy applies once you play it. Fonts load from Google Fonts.</p>
+		<h2>The game</h2>
+		<p>Soul Hunt runs on Roblox. Your account, purchases and chat are handled by Roblox under <a href="https://www.roblox.com/info/privacy" rel="noopener">Roblox's privacy policy</a>. The game itself stores only your in-game progress (level, Rings, items, settings) against your Roblox user id, and records gameplay events through Roblox's own analytics to balance the game. Nothing is sold or shared outside Roblox.</p>
+		<h2>Contact</h2>
+		<p>Bugs, questions, takedown requests: the <a href="https://discord.gg/xx6YXn2udq" rel="noopener">Discord server</a> (#help or #bug-reports), or the GGSK page on <a href="https://www.facebook.com/hddGGSK" rel="noopener">Facebook</a>.</p>
+		<p>Developer: GGSK (Money Talks Studio on Roblox). Soul Hunt is an original work; names, characters and art are the developer's own.</p>
+	</div>
+	<div lang="th">
+		<h2>เว็บไซต์นี้</h2>
+		<p>เว็บนี้เป็นหน้าเว็บแบบคงที่บน GitHub Pages ไม่ตั้งคุกกี้ของตัวเอง ไม่มี analytics คลิปที่ฝังมาจาก YouTube โหมดความเป็นส่วนตัว (youtube-nocookie.com) นโยบายของ YouTube มีผลเมื่อกดเล่น ฟอนต์โหลดจาก Google Fonts</p>
+		<h2>ตัวเกม</h2>
+		<p>Soul Hunt ทำงานบน Roblox บัญชี การซื้อ และแชตอยู่ภายใต้<a href="https://www.roblox.com/info/privacy" rel="noopener">นโยบายความเป็นส่วนตัวของ Roblox</a> ตัวเกมเก็บเฉพาะความคืบหน้าในเกม (เลเวล วงแหวน ไอเทม ตั้งค่า) ผูกกับ user id ของ Roblox และบันทึกเหตุการณ์ในเกมผ่าน analytics ของ Roblox เพื่อปรับบาลานซ์ ไม่มีการขายหรือส่งต่อข้อมูลออกนอก Roblox</p>
+		<h2>ติดต่อ</h2>
+		<p>แจ้งบั๊ก สอบถาม หรือขอให้นำเนื้อหาออก: <a href="https://discord.gg/xx6YXn2udq" rel="noopener">Discord</a> (#help หรือ #bug-reports) หรือเพจ GGSK บน <a href="https://www.facebook.com/hddGGSK" rel="noopener">Facebook</a></p>
+		<p>ผู้พัฒนา: GGSK (Money Talks Studio บน Roblox) Soul Hunt เป็นผลงานต้นฉบับ ชื่อ ตัวละคร และภาพเป็นของผู้พัฒนาเอง</p>
+	</div>
+</main>
+<footer class="foot"><p><span lang="en">Soul Hunt is a free game on Roblox by GGSK. Not affiliated with Roblox Corporation.</span><span lang="th">Soul Hunt เป็นเกมฟรีบน Roblox โดย GGSK ไม่เกี่ยวข้องกับ Roblox Corporation</span></p><p><a href="https://www.youtube.com/@hddGGSK" rel="noopener">YouTube</a> · <a href="https://www.facebook.com/hddGGSK" rel="noopener">Facebook</a> · <a href="https://discord.gg/xx6YXn2udq" rel="noopener">Discord</a> · <a href="privacy.html"><span lang="en">Privacy & contact</span><span lang="th">ความเป็นส่วนตัวและติดต่อ</span></a></p></footer>
+<script>(function () {
+	var root = document.documentElement;
+	var key = "soulhunt-lang";
+	var saved = null;
+	try { saved = localStorage.getItem(key); } catch (e) {}
+	var browser = (navigator.language || "").toLowerCase().indexOf("th") === 0 ? "th" : "en";
+	root.setAttribute("data-lang", saved === "th" || saved === "en" ? saved : browser);
+	document.querySelectorAll(".lang").forEach(function (b) {
+		b.addEventListener("click", function () {
+			var next = root.getAttribute("data-lang") === "th" ? "en" : "th";
+			root.setAttribute("data-lang", next);
+			try { localStorage.setItem(key, next); } catch (e) {}
+		});
+	});
+})();
+</script>
+</body>
+</html>

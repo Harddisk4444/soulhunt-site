@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://soulhunt.ggsk.dev/sitemap.xml

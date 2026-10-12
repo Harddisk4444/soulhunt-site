@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="th" data-lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>404 · Soul Hunt — Roblox anime action RPG</title>
+<meta name="description" content="Hunt spirit beasts, absorb their Rings, steal Rings from other players. Four Souls, world bosses, PvP. Free on Roblox.">
+<link rel="icon" href="img/favicon.png">
+<link rel="canonical" href="https://soulhunt.ggsk.dev/">
+<meta property="og:title" content="Soul Hunt — Roblox anime action RPG">
+<meta property="og:description" content="Hunt spirit beasts, absorb their Rings, steal Rings from other players. Four Souls, world bosses, PvP. Free on Roblox.">
+<meta property="og:image" content="https://soulhunt.ggsk.dev/img/og.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;800&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>/* Soul Hunt site. Colours are the game's own (src/shared/Palette.luau): lacquer panels, bronze trim,
+   jade for ready, ward gold for rewards, Grade cyan/jade/amethyst/gold. Dark only, like the game. */
+:root {
+	--bg: #0b0e18;
+	--lacquer: #1b2238;
+	--outline: #10131c;
+	--bronze: #c08a3e;
+	--jade: #2ed3a6;
+	--ward: #ffd978;
+	--spark: #5fe6ff;
+	--text: #eef3f8;
+	--muted: #9aa7b8;
+	--moon: #9fe7ff;
+	color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-family: Kanit, Nunito, system-ui, sans-serif;
+	line-height: 1.55;
+	-webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--moon); }
+h1, h2, h3 { font-family: Nunito, Kanit, sans-serif; font-weight: 900; line-height: 1.15; text-wrap: balance; margin: 0 0 .5em; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); }
+h2 { font-size: clamp(1.5rem, 3.5vw, 2.1rem); color: var(--ward); }
+h3 { font-size: 1.3rem; color: var(--moon); }
+p { margin: 0 0 .8em; }
+.muted { color: var(--muted); }
+
+/* language: the page shows one <span lang>/<div lang> set at a time */
+/* (scoped under body: <html lang> itself must never match) */
+body [lang="en"], body [lang="th"] { display: none; }
+html[data-lang="en"] body div[lang="en"], html[data-lang="th"] body div[lang="th"] { display: block; }
+html[data-lang="en"] body span[lang="en"], html[data-lang="th"] body span[lang="th"] { display: inline; }
+
+/* nav */
+.nav {
+	position: sticky; top: 0; z-index: 10;
+	display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+	padding: 10px 16px; padding-top: calc(10px + env(safe-area-inset-top, 0px));
+	background: rgba(11, 14, 24, .86); backdrop-filter: blur(10px);
+	border-bottom: 1px solid rgba(192, 138, 62, .35);
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-family: Nunito, sans-serif; color: var(--text); text-decoration: none; font-size: 1.15rem; }
+.brand img { border-radius: 8px; }
+.links { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; }
+.links a { color: var(--text); text-decoration: none; font-weight: 600; padding: 6px 2px; border-bottom: 2px solid transparent; }
+.links a.on { border-color: var(--ward); }
+.lang { background: var(--lacquer); color: var(--text); border: 1px solid var(--bronze); border-radius: 999px; padding: 6px 12px; font: inherit; font-weight: 700; cursor: pointer; }
+
+/* hero */
+.hero { position: relative; isolation: isolate; min-height: min(78vh, 720px); display: grid; place-items: center; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(.55) saturate(1.1); }
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(11,14,24,.15) 0%, rgba(11,14,24,.55) 60%, var(--bg) 100%); }
+.hero-in { text-align: center; padding: 40px 16px 32px; max-width: 760px; }
+.logo { width: min(520px, 80vw); margin: 0 auto 12px; filter: drop-shadow(0 6px 24px rgba(0,0,0,.6)); }
+.tag { font-size: clamp(1.05rem, 2.4vw, 1.4rem); font-weight: 600; margin-bottom: 20px; text-shadow: 0 2px 10px #000; }
+.cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 14px; }
+.btn {
+	display: inline-flex; align-items: center; gap: 8px;
+	padding: 14px 24px; border-radius: 14px; text-decoration: none; font-weight: 800; font-size: 1.05rem;
+	background: var(--lacquer); color: var(--text); border: 2px solid var(--bronze);
+	box-shadow: 0 4px 0 var(--outline), 0 10px 24px rgba(0,0,0,.45);
+	transition: transform .08s;
+}
+.btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--outline); }
+.btn.play { background: linear-gradient(180deg, #ffe39a, var(--ward)); color: var(--outline); border-color: #a86f23; }
+.code { font-size: 1.05rem; text-shadow: 0 2px 8px #000; }
+.code b { color: var(--ward); letter-spacing: .06em; }
+.age { font-size: .9rem; color: var(--muted); max-width: 560px; margin: 0 auto; text-shadow: 0 1px 6px #000; }
+
+/* body sections */
+.wrap { width: min(1040px, 100%); margin: 0 auto; padding: 8px 16px 48px; }
+.wrap > section { padding: 28px 0; border-bottom: 1px solid rgba(154,167,184,.15); }
+.wrap > section:last-child { border-bottom: 0; }
+.pills { list-style: none; padding: 0; margin: 0 0 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+.pills li { background: var(--lacquer); border: 1px solid rgba(192,138,62,.5); border-radius: 999px; padding: 8px 14px; font-weight: 600; }
+.more { font-weight: 700; }
+.video { position: relative; aspect-ratio: 16 / 9; max-width: 100%; background: #000; border-radius: 14px; overflow: hidden; border: 2px solid var(--bronze); }
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.steps li { background: var(--lacquer); border-radius: 14px; padding: 16px 16px 16px 58px; position: relative; border: 1px solid rgba(154,167,184,.15); min-width: 0; }
+.steps b { position: absolute; left: 14px; top: 12px; width: 34px; height: 34px; border-radius: 50%; background: var(--ward); color: var(--outline); display: grid; place-items: center; font-family: Nunito, sans-serif; font-weight: 900; }
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-bottom: 12px; }
+.grid figure { margin: 0; background: var(--lacquer); border-radius: 14px; overflow: hidden; border: 1px solid rgba(192,138,62,.4); }
+.grid figcaption { padding: 10px 14px 12px; display: grid; }
+.grid figcaption span { color: var(--muted); font-size: .92rem; }
+.community { text-align: center; }
+
+/* guide */
+.toc { list-style: none; padding: 0; margin: 0 0 24px; display: flex; flex-wrap: wrap; gap: 8px; }
+.toc a { display: inline-block; background: var(--lacquer); border: 1px solid rgba(154,167,184,.25); border-radius: 999px; padding: 6px 12px; text-decoration: none; color: var(--text); font-weight: 600; font-size: .95rem; }
+.topic { padding: 24px 0; border-top: 1px solid rgba(154,167,184,.15); scroll-margin-top: 72px; }
+.card { display: grid; gap: 10px; background: var(--lacquer); border-radius: 14px; overflow: hidden; margin-bottom: 14px; border: 1px solid rgba(154,167,184,.12); }
+.card-text { padding: 4px 16px 12px; }
+.card-text p { margin: 0 0 .25em; }
+@media (min-width: 760px) {
+	.card { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: center; }
+	.card img { height: 100%; object-fit: cover; }
+	.card-text { padding: 14px 18px; }
+}
+
+/* updates */
+.patch { background: var(--lacquer); border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; border: 1px solid rgba(192,138,62,.35); }
+.patch h3 { color: var(--ward); font-size: 1.35rem; }
+.patch p { margin: 0 0 .3em; }
+
+/* prose */
+.prose h2 { font-size: 1.35rem; color: var(--moon); margin-top: 1.4em; }
+.prose p { max-width: 68ch; }
+
+.foot { text-align: center; color: var(--muted); font-size: .9rem; padding: 24px 16px calc(24px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid rgba(154,167,184,.15); }
+</style>
+</head>
+<body>
+<nav class="nav"><a class="brand" href="index.html"><img src="img/favicon.png" alt="" width="36" height="36">Soul Hunt</a><div class="links"><a href="index.html" class="on"><span lang="en">Home</span><span lang="th">หน้าแรก</span></a><a href="guide.html"><span lang="en">Guide</span><span lang="th">คู่มือ</span></a><a href="updates.html"><span lang="en">Updates</span><span lang="th">อัปเดต</span></a><a href="https://discord.gg/xx6YXn2udq" rel="noopener">Discord</a><button class="lang" type="button" aria-label="Switch language">TH / EN</button></div></nav>
+
+<header class="hero">
+	<img class="hero-bg" src="img/hero.webp" alt="" width="1376" height="768" fetchpriority="high">
+	<div class="hero-in">
+		<img class="logo" src="img/logo.webp" alt="Soul Hunt" width="900" height="515">
+		<p class="tag"><span lang="en">Hunt spirit beasts. Absorb their Rings. Steal them from everyone else.</span><span lang="th">ล่าสัตว์วิญญาณ ดูดพลังมาเป็นวงแหวน แย่งวงจากคนอื่นได้</span></p>
+		<div class="cta">
+			<a class="btn play" href="https://www.roblox.com/games/74464811278655" rel="noopener">▶ <span lang="en">Play free on Roblox</span><span lang="th">เล่นฟรีบน Roblox</span></a>
+			<a class="btn" href="https://discord.gg/xx6YXn2udq" rel="noopener">💬 Discord</a>
+		</div>
+		<p class="code">🎁 <span lang="en">Code</span><span lang="th">โค้ด</span> <b>SOULHUNT</b> → 1,000 Lumen + Resonance Ward</p>
+		<p class="age">🔞 <span lang="en">Trial period: age-checked 16+ Roblox accounts only (Settings → Account Info → Age Group). All ages opens once the trial completes.</span><span lang="th">ช่วงทดลอง: เข้าได้เฉพาะบัญชี Roblox 16+ ที่ตรวจอายุแล้ว (ตั้งค่า → Account Info → Age Group) เปิดทุกวัยเมื่อผ่านช่วงทดลอง</span></p>
+	</div>
+</header>
+<main class="wrap">
+	<section class="update">
+		<h2>🌙 <span lang="en">Update 1.1 is live</span><span lang="th">อัปเดต 1.1 มาแล้ว</span></h2>
+		<ul class="pills">
+			<li><span lang="en">New Soul: Crescent Moon Chakram</span><span lang="th">Soul ใหม่: กงจักรจันทร์เสี้ยว</span></li>
+			<li><span lang="en">New zone: Heart Cavern Lv40–50</span><span lang="th">โซนใหม่: Heart Cavern Lv40–50</span></li>
+			<li><span lang="en">Level cap 50 · 4th Ring · V ultimates</span><span lang="th">เลเวลตัน 50 · วงแหวนที่ 4 · ท่าไม้ตาย V</span></li>
+			<li><span lang="en">Proving Grounds · daily sign-in rewards</span><span lang="th">ลานประลอง · รางวัลเข้าเกมรายวัน</span></li>
+		</ul>
+		<a class="more" href="updates.html"><span lang="en">All patch notes →</span><span lang="th">ดู patch notes ทั้งหมด →</span></a>
+	</section>
+	<section class="clip">
+		<h2><span lang="en">See it</span><span lang="th">ดูคลิป</span></h2>
+		<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/qBFpHKiM8_A" title="Soul Hunt clip" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
+	</section>
+	<section class="loop">
+		<h2><span lang="en">The loop</span><span lang="th">ลูปหลัก</span></h2>
+		<ol class="steps">
+			<li><b>1</b><span lang="en">Hunt spirit beasts. A rare glowing <strong>Resonant</strong> one leaves a <strong>Remnant</strong>.</span><span lang="th">ล่าสัตว์วิญญาณ ตัวเรืองแสง <strong>Resonant</strong> ทิ้ง <strong>เศษพลัง</strong></span></li>
+			<li><b>2</b><span lang="en">Channel to absorb it and earn a <strong>Ring</strong> — Grade I to IV.</span><span lang="th">กดดูดซับเพื่อได้ <strong>วงแหวน</strong> Grade I–IV</span></li>
+			<li><b>3</b><span lang="en">While you channel, anyone can fight you for it. Steal theirs too.</span><span lang="th">ระหว่างดูดซับ ใครก็มาแย่งได้ และคุณแย่งของเขาได้เหมือนกัน</span></li>
+			<li><b>4</b><span lang="en">Rings give stats, perks, traits and your Soul's Z / X / C / V.</span><span lang="th">วงแหวนให้ค่าสถานะ โบนัส ความสามารถ และท่า Z / X / C / V</span></li>
+		</ol>
+	</section>
+	<section class="souls">
+		<h2><span lang="en">Four Souls</span><span lang="th">วิญญาณ 4 ตัว</span></h2>
+		<div class="grid"><figure><img src="img/cards/soul_obelisk_maul.webp" alt="Obelisk Maul" loading="lazy" width="1000" height="475"><figcaption><b><span lang="en">Obelisk Maul</span><span lang="th">ค้อนเสาศิลา</span></b><span><span lang="en">Defense / Power</span><span lang="th">ป้องกัน / พลัง</span></span></figcaption></figure><figure><img src="img/cards/soul_thorn_lotus.webp" alt="Twilight Thorn Lotus" loading="lazy" width="1000" height="475"><figcaption><b><span lang="en">Twilight Thorn Lotus</span><span lang="th">บัวหนามสนธยา</span></b><span><span lang="en">Control / Support</span><span lang="th">คุม / ซัพพอร์ต</span></span></figcaption></figure><figure><img src="img/cards/soul_thunderfang_kirin.webp" alt="Thunderfang Kirin" loading="lazy" width="1000" height="475"><figcaption><b><span lang="en">Thunderfang Kirin</span><span lang="th">กิเลนเขี้ยวอสนี</span></b><span><span lang="en">Agility</span><span lang="th">ว่องไว</span></span></figcaption></figure><figure><img src="img/cards/soul_crescent_chakram.webp" alt="Crescent Moon Chakram" loading="lazy" width="1000" height="475"><figcaption><b><span lang="en">Crescent Moon Chakram</span><span lang="th">กงจักรจันทร์เสี้ยว</span></b><span><span lang="en">Agility / Power · NEW</span><span lang="th">ว่องไว / พลัง · ใหม่</span></span></figcaption></figure></div>
+		<a class="more" href="guide.html#souls"><span lang="en">Skills and builds in the guide →</span><span lang="th">ท่าและแนวบิลด์ในคู่มือ →</span></a>
+	</section>
+	<section class="community">
+		<h2><span lang="en">Community</span><span lang="th">คอมมูนิตี้</span></h2>
+		<p><span lang="en">Bug reports, votes on what comes next, patch notes first, and parties looking for players.</span><span lang="th">แจ้งบั๊ก โหวตว่าอยากได้อะไรต่อ อ่าน patch notes ก่อนใคร และหาปาร์ตี้</span></p>
+		<a class="btn" href="https://discord.gg/xx6YXn2udq" rel="noopener">💬 <span lang="en">Join the Discord</span><span lang="th">เข้า Discord</span></a>
+	</section>
+</main>
+<footer class="foot"><p><span lang="en">Soul Hunt is a free game on Roblox by GGSK. Not affiliated with Roblox Corporation.</span><span lang="th">Soul Hunt เป็นเกมฟรีบน Roblox โดย GGSK ไม่เกี่ยวข้องกับ Roblox Corporation</span></p><p><a href="https://www.youtube.com/@hddGGSK" rel="noopener">YouTube</a> · <a href="https://www.facebook.com/hddGGSK" rel="noopener">Facebook</a> · <a href="https://discord.gg/xx6YXn2udq" rel="noopener">Discord</a> · <a href="privacy.html"><span lang="en">Privacy & contact</span><span lang="th">ความเป็นส่วนตัวและติดต่อ</span></a></p></footer>
+<script>(function () {
+	var root = document.documentElement;
+	var key = "soulhunt-lang";
+	var saved = null;
+	try { saved = localStorage.getItem(key); } catch (e) {}
+	var browser = (navigator.language || "").toLowerCase().indexOf("th") === 0 ? "th" : "en";
+	root.setAttribute("data-lang", saved === "th" || saved === "en" ? saved : browser);
+	document.querySelectorAll(".lang").forEach(function (b) {
+		b.addEventListener("click", function () {
+			var next = root.getAttribute("data-lang") === "th" ? "en" : "th";
+			root.setAttribute("data-lang", next);
+			try { localStorage.setItem(key, next); } catch (e) {}
+		});
+	});
+})();
+</script>
+</body>
+</html>
