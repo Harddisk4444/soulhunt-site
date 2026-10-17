@@ -1,0 +1,15 @@
+# Soul Hunt
+
+> Soul Hunt is a free anime action RPG on Roblox by GGSK. Hunt spirit beasts, absorb the Remnant they leave to earn a Ring (Grade I to IV), and fight other players for theirs. Four Souls to awaken, world and field bosses, PvP. Thai and English.
+
+## Pages
+
+- [Home](https://soulhunt.ggsk.dev/): what the game is, the four Souls, the bosses and a gameplay clip.
+- [Guide](https://soulhunt.ggsk.dev/guide.html): every Ring, Soul, monster, boss and build, with the game's own numbers.
+- [Updates](https://soulhunt.ggsk.dev/updates.html): every patch since launch, newest first.
+- [Privacy & contact](https://soulhunt.ggsk.dev/privacy.html): what the site and the game collect, and how to reach the developer.
+
+## Play
+
+- [Soul Hunt on Roblox](https://www.roblox.com/games/74464811278655)
+- [Discord](https://discord.gg/xx6YXn2udq)
